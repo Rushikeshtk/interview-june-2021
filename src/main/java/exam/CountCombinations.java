@@ -1,79 +1,52 @@
-import java.util.Arrays;
-import java.util.Comparator;
+mport java.io.*;
+ 
+class GFG
+{
+     
+
+static int factorial(int n)
+{
+    int f = 1;
+    if (n == 0|| n == 1)
+        return 1;
+    for (int i = 2; i <= n; i++)
+        f = f * i;
+    return f;
+}
  
 
-public class FractionalKnapSack {
+static int getSum(int arr[], int n)
+{
     
-    private static double getMaxValue(int[] wt, int[] val,
-                                      int capacity)
-    {
-        ItemValue[] iVal = new ItemValue[wt.length];
- 
-        for (int i = 0; i < wt.length; i++) {
-            iVal[i] = new ItemValue(wt[i], val[i], i);
-        }
- 
-       
-        Arrays.sort(iVal, new Comparator<ItemValue>() {
-            @Override
-            public int compare(ItemValue o1, ItemValue o2)
-            {
-                return o2.cost.compareTo(o1.cost);
-            }
-        });
- 
-        double totalValue = 0d;
- 
-        for (ItemValue i : iVal) {
- 
-            int curWt = (int)i.wt;
-            int curVal = (int)i.val;
- 
-            if (capacity - curWt >= 0) {
-               
-                capacity = capacity - curWt;
-                totalValue += curVal;
-            }
-            else {
-               
-                double fraction
-                    = ((double)capacity / (double)curWt);
-                totalValue += (curVal * fraction);
-                capacity
-                    = (int)(capacity - (curWt * fraction));
-                break;
-            }
-        }
- 
-        return totalValue;
-    }
- 
-   
-    static class ItemValue {
-        Double cost;
-        double wt, val, ind;
- 
-        
-        public ItemValue(int wt, int val, int ind)
-        {
-            this.wt = wt;
-            this.val = val;
-            this.ind = ind;
-            cost = new Double((double)val / (double)wt);
-        }
-    }
+    int fact = factorial(n);
  
     
-    public static void main(String[] args)
+    int digitsum = 0;
+    for (int i = 0; i < n; i++)
+        digitsum += arr[i];
+    digitsum *= (fact / n);
+ 
+    
+    int res = 0;
+    for (int i = 1, k = 1;
+             i <= n; i++)
     {
-        int[] wt = { 10, 40, 20, 30 };
-        int[] val = { 60, 40, 100, 120 };
-        int capacity = 50;
- 
-        double maxValue = getMaxValue(wt, val, capacity);
- 
-       
-        System.out.println("Maximum value we can obtain = "
-                           + maxValue);
+        res += (k * digitsum);
+        k = k * 10;
     }
+ 
+    return res;
+}
+ 
+
+public static void main (String[] args)
+{
+ 
+    
+    int arr[] = {1, 2, 3};
+    int n = arr.length;
+     
+    
+    System.out.println(getSum(arr, n));
+}
 }
